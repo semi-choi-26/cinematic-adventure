@@ -1,0 +1,51 @@
+name: "🤖 Android APK Build (Stable)"
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: 4.3
+  EXPORT_NAME: cinematic-adventure
+
+jobs:
+  export-android:
+    name: Android Export
+    runs-on: ubuntu-22.04
+    container:
+      image: barichello/godot-ci:4.3
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v5
+        with:
+          lfs: true
+
+      - name: 📁 Setup Android Export
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates
+          mkdir -p builds/android
+
+      - name: 🔨 Build Android APK
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          godot --headless --verbose --export-release "Android" builds/android/${EXPORT_NAME}.apk 2>&1
+
+      - name: 📤 Upload APK
+        uses: actions/upload-artifact@v5
+        with:
+          name: android-apk
+          path: builds/android/${{ env.EXPORT_NAME }}.apk
+          retention-days: 14
+
+      - name: 📊 Build Summary
+        run: |
+          echo "### 📱 Android APK Build Success!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**File:** ${EXPORT_NAME}.apk" >> $GITHUB_STEP_SUMMARY
+          if [ -f "builds/android/${EXPORT_NAME}.apk" ]; then
+            echo "**Size:** $(du -h builds/android/${EXPORT_NAME}.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Status:** Build failed - APK not found" >> $GITHUB_STEP_SUMMARY
+          fi

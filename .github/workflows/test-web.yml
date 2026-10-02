@@ -1,0 +1,27 @@
+name: "🧪 Test Web Build"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-web:
+    runs-on: ubuntu-22.04
+    container:
+      image: barichello/godot-ci:4.3
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v5
+
+      - name: 📁 Create Build Directory
+        run: mkdir -p builds/web
+
+      - name: 🔨 Build HTML5
+        run: |
+          godot --headless --verbose --export-release "HTML5" builds/web/index.html 2>&1
+
+      - name: 📤 Upload Web Build
+        uses: actions/upload-artifact@v5
+        with:
+          name: web-build
+          path: builds/web/
