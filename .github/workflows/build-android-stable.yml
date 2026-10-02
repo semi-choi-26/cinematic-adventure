@@ -28,9 +28,18 @@ jobs:
           wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
           unzip Godot_v4.3-stable_export_templates.tpz -d /tmp/templates
           cp -r /tmp/templates/templates/* ~/.local/share/godot/export_templates/4.3.stable/
-          ls -la ~/.local/share/godot/export_templates/4.3.stable/
 
-      - name: 🔧 Setup Debug Keystore
+      - name: 🔧 Setup Java SDK
+        run: |
+          mkdir -p ~/.config/godot
+          echo '[gd_resource type="EditorSettings" format=3]' > ~/.config/godot/editor_settings-4.tres
+          echo '' >> ~/.config/godot/editor_settings-4.tres
+          echo '[resource]' >> ~/.config/godot/editor_settings-4.tres
+          echo 'export/android/java_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64"' >> ~/.config/godot/editor_settings-4.tres
+          echo 'export/android/android_sdk_path = "/usr/lib/android-sdk"' >> ~/.config/godot/editor_settings-4.tres
+          echo "Java SDK configured"
+
+      - name: 🔑 Setup Debug Keystore
         run: |
           mkdir -p ~/.android
           keytool -genkeypair -v -keystore ~/.android/debug.keystore \
@@ -39,12 +48,11 @@ jobs:
             -dname "CN=Android Debug,O=Android,C=US"
 
           KEYSTORE_PATH=$(readlink -f ~/.android/debug.keystore)
-          echo "Keystore at: $KEYSTORE_PATH"
+          echo "Keystore created at: $KEYSTORE_PATH"
 
           sed -i "s|keystore/debug=\".*\"|keystore/debug=\"$KEYSTORE_PATH\"|g" export_presets.cfg
 
-          echo "Updated export_presets.cfg:"
-          grep "keystore" export_presets.cfg
+          echo "Keystore path updated in export_presets.cfg"
 
       - name: 📁 Setup Build Directory
         run: mkdir -p builds/android
@@ -64,8 +72,8 @@ jobs:
         run: |
           echo "### 📱 Android APK Build Success!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**File:** ${EXPORT_NAME}.apk" >> $GITHUB_STEP_SUMMARY
           if [ -f "builds/android/${EXPORT_NAME}.apk" ]; then
+            echo "**File:** ${EXPORT_NAME}.apk" >> $GITHUB_STEP_SUMMARY
             echo "**Size:** $(du -h builds/android/${EXPORT_NAME}.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
             echo "**Status:** ✅ Build successful!" >> $GITHUB_STEP_SUMMARY
           else
