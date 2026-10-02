@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  GODOT_VERSION: 4.3
+  GODOT_VERSION: 4.3.0
   EXPORT_NAME: cinematic-adventure
 
 jobs:
@@ -22,15 +22,12 @@ jobs:
         with:
           lfs: true
 
-      - name: 📁 Setup Android Export
-        run: |
-          mkdir -p ~/.local/share/godot/export_templates
-          mkdir -p builds/android
+      - name: 📁 Setup Build Directory
+        run: mkdir -p builds/android
 
       - name: 🔨 Build Android APK
         run: |
-          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}.stable
-          godot --headless --verbose --export-release "Android" builds/android/${EXPORT_NAME}.apk 2>&1
+          godot --headless --verbose --export-release "Android" builds/android/${EXPORT_NAME}.apk
 
       - name: 📤 Upload APK
         uses: actions/upload-artifact@v5
