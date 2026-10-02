@@ -43,11 +43,11 @@ jobs:
           path: builds/web/
           retention-days: 14
 
-      # GitHub Pages 자동 배포 (선택사항)
-      - name: 🚀 Deploy to GitHub Pages
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./builds/web
-          cname: # 커스텀 도메인이 있으면 여기에 입력
+      # GitHub Pages 자동 배포 (선택사항) - 현재 비활성화
+      # - name: 🚀 Deploy to GitHub Pages
+      #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      #   uses: peaceiris/actions-gh-pages@v3
+      #   with:
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     publish_dir: ./builds/web
+      #     cname: # 커스텀 도메인이 있으면 여기에 입력

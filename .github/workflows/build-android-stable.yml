@@ -22,30 +22,25 @@ jobs:
         with:
           lfs: true
 
-      - name: 🔧 Setup Export Templates
+      - name: 🔧 Setup Java SDK
         run: |
-          # Docker 이미지의 템플릿 경로 확인
-          echo "=== Checking template paths ==="
-          ls -la /root/.local/share/godot/ || true
-          ls -la ~/.local/share/godot/ || true
+          # Java 경로 설정
+          mkdir -p ~/.config/godot
+          cat > ~/.config/godot/editor_settings-4.tres << 'EOF'
+[gd_resource type="EditorSettings" format=3]
 
-          # 템플릿 디렉토리 생성
-          mkdir -p ~/.local/share/godot/export_templates/4.3.stable
+[resource]
+export/android/java_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64"
+export/android/android_sdk_path = "/usr/lib/android-sdk"
+export/android/debug_keystore = ""
+export/android/debug_keystore_user = "androiddebugkey"
+export/android/debug_keystore_pass = "android"
+export/android/force_system_user = false
+export/android/shutdown_adb_on_exit = true
+EOF
 
-          # Docker 이미지의 템플릿 복사 (여러 가능한 경로 시도)
-          if [ -d "/root/.local/share/godot/templates/4.3.stable" ]; then
-            echo "Found templates in /root/.local/share/godot/templates/4.3.stable"
-            cp -r /root/.local/share/godot/templates/4.3.stable/* \
-                  ~/.local/share/godot/export_templates/4.3.stable/
-          elif [ -d "/root/.local/share/godot/export_templates/4.3.stable" ]; then
-            echo "Found templates in /root/.local/share/godot/export_templates/4.3.stable"
-            cp -r /root/.local/share/godot/export_templates/4.3.stable/* \
-                  ~/.local/share/godot/export_templates/4.3.stable/
-          fi
-
-          # 확인
-          echo "=== Templates after copy ==="
-          ls -la ~/.local/share/godot/export_templates/4.3.stable/ || echo "No templates found!"
+          echo "Java SDK configured"
+          java -version
 
       - name: 📁 Setup Build Directory
         run: mkdir -p builds/android
@@ -68,6 +63,7 @@ jobs:
           echo "**File:** ${EXPORT_NAME}.apk" >> $GITHUB_STEP_SUMMARY
           if [ -f "builds/android/${EXPORT_NAME}.apk" ]; then
             echo "**Size:** $(du -h builds/android/${EXPORT_NAME}.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
+            echo "**Status:** ✅ Build successful!" >> $GITHUB_STEP_SUMMARY
           else
-            echo "**Status:** Build failed - APK not found" >> $GITHUB_STEP_SUMMARY
+            echo "**Status:** ❌ Build failed - APK not found" >> $GITHUB_STEP_SUMMARY
           fi
