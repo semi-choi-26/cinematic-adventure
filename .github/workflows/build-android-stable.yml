@@ -25,39 +25,26 @@ jobs:
       - name: 📦 Download Export Templates
         run: |
           mkdir -p ~/.local/share/godot/export_templates/4.3.stable
-
-          # Godot 4.3 Export Templates 다운로드
           wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
-
-          # 압축 해제
           unzip Godot_v4.3-stable_export_templates.tpz -d /tmp/templates
-
-          # 템플릿 복사
           cp -r /tmp/templates/templates/* ~/.local/share/godot/export_templates/4.3.stable/
-
-          # 확인
           ls -la ~/.local/share/godot/export_templates/4.3.stable/
 
-      - name: 🔧 Setup Java SDK & Debug Keystore
+      - name: 🔧 Setup Debug Keystore
         run: |
-          # Debug Keystore 생성
           mkdir -p ~/.android
           keytool -genkeypair -v -keystore ~/.android/debug.keystore \
             -storepass android -alias androiddebugkey -keypass android \
             -keyalg RSA -keysize 2048 -validity 10000 \
             -dname "CN=Android Debug,O=Android,C=US"
 
-          # Godot Editor Settings
-          mkdir -p ~/.config/godot
-          echo '[gd_resource type="EditorSettings" format=3]' > ~/.config/godot/editor_settings-4.tres
-          echo '' >> ~/.config/godot/editor_settings-4.tres
-          echo '[resource]' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/java_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64"' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/android_sdk_path = "/usr/lib/android-sdk"' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/debug_keystore = "'$HOME'/.android/debug.keystore"' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/debug_keystore_user = "androiddebugkey"' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/debug_keystore_pass = "android"' >> ~/.config/godot/editor_settings-4.tres
-          echo "Debug keystore created and configured"
+          KEYSTORE_PATH=$(readlink -f ~/.android/debug.keystore)
+          echo "Keystore at: $KEYSTORE_PATH"
+
+          sed -i "s|keystore/debug=\".*\"|keystore/debug=\"$KEYSTORE_PATH\"|g" export_presets.cfg
+
+          echo "Updated export_presets.cfg:"
+          grep "keystore" export_presets.cfg
 
       - name: 📁 Setup Build Directory
         run: mkdir -p builds/android
@@ -82,5 +69,5 @@ jobs:
             echo "**Size:** $(du -h builds/android/${EXPORT_NAME}.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
             echo "**Status:** ✅ Build successful!" >> $GITHUB_STEP_SUMMARY
           else
-            echo "**Status:** ❌ Build failed - APK not found" >> $GITHUB_STEP_SUMMARY
+            echo "**Status:** ❌ Build failed" >> $GITHUB_STEP_SUMMARY
           fi
