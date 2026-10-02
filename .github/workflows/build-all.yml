@@ -1,0 +1,60 @@
+name: "🚀 Build All Platforms"
+
+on:
+  push:
+    tags:
+      - 'v*'  # v1.0, v1.1 등 버전 태그 푸시 시 실행
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: 4.3
+  EXPORT_NAME: cinematic-adventure
+
+jobs:
+  export-all:
+    name: Export All Platforms
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        platform: [Android, HTML5]
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: 🎮 Setup Godot
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: ${{ env.GODOT_VERSION }}
+          use-dotnet: false
+          include-templates: true
+
+      - name: 📁 Create Export Directory
+        run: mkdir -p builds/${{ matrix.platform }}
+
+      - name: 🔨 Build ${{ matrix.platform }}
+        run: |
+          if [ "${{ matrix.platform }}" == "Android" ]; then
+            godot --headless --export-release "Android" builds/Android/${{ env.EXPORT_NAME }}.apk
+          elif [ "${{ matrix.platform }}" == "HTML5" ]; then
+            godot --headless --export-release "HTML5" builds/HTML5/index.html
+          fi
+
+      - name: 📤 Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }}-build
+          path: builds/${{ matrix.platform }}/
+          retention-days: 30
+
+      - name: 📊 Build Summary
+        run: |
+          echo "### ✅ ${{ matrix.platform }} Build Complete!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Platform:** ${{ matrix.platform }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Godot Version:** ${{ env.GODOT_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          ls -lh builds/${{ matrix.platform }}/ >> $GITHUB_STEP_SUMMARY
