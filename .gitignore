@@ -2,7 +2,7 @@
 .godot/
 .import/
 export.cfg
-export_presets.cfg
+# export_presets.cfg  ← GitHub Actions에 필요하므로 주석 처리
 
 # Imported translations (automatically generated from CSV files)
 *.translation

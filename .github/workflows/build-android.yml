@@ -19,7 +19,7 @@ jobs:
     steps:
       # 1. 코드 체크아웃
       - name: 📥 Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           lfs: true
 
@@ -48,7 +48,7 @@ jobs:
 
       # 6. APK 파일 업로드
       - name: 📤 Upload APK Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: android-apk
           path: builds/android/${{ env.EXPORT_NAME }}.apk
@@ -73,7 +73,7 @@ jobs:
 
     steps:
       - name: 📥 Download APK Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: android-apk
           path: ./
