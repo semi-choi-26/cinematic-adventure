@@ -44,7 +44,7 @@ func follow_target(delta: float) -> void:
 
 	# Add look-ahead based on player direction
 	if target.has_method("get_facing_direction"):
-		var facing := target.get_facing_direction()
+		var facing: int = target.get_facing_direction()
 		target_pos.x += look_ahead_distance * facing
 
 	# Smooth follow
