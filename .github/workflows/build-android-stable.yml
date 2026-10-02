@@ -22,6 +22,22 @@ jobs:
         with:
           lfs: true
 
+      - name: 📦 Download Export Templates
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/4.3.stable
+
+          # Godot 4.3 Export Templates 다운로드
+          wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
+
+          # 압축 해제
+          unzip Godot_v4.3-stable_export_templates.tpz -d /tmp/templates
+
+          # 템플릿 복사
+          cp -r /tmp/templates/templates/* ~/.local/share/godot/export_templates/4.3.stable/
+
+          # 확인
+          ls -la ~/.local/share/godot/export_templates/4.3.stable/
+
       - name: 🔧 Setup Java SDK
         run: |
           mkdir -p ~/.config/godot
@@ -30,13 +46,7 @@ jobs:
           echo '[resource]' >> ~/.config/godot/editor_settings-4.tres
           echo 'export/android/java_sdk_path = "/usr/lib/jvm/java-17-openjdk-amd64"' >> ~/.config/godot/editor_settings-4.tres
           echo 'export/android/android_sdk_path = "/usr/lib/android-sdk"' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/debug_keystore = ""' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/debug_keystore_user = "androiddebugkey"' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/debug_keystore_pass = "android"' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/force_system_user = false' >> ~/.config/godot/editor_settings-4.tres
-          echo 'export/android/shutdown_adb_on_exit = true' >> ~/.config/godot/editor_settings-4.tres
           echo "Java SDK configured"
-          java -version || echo "Java not found"
 
       - name: 📁 Setup Build Directory
         run: mkdir -p builds/android
