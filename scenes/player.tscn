@@ -11,14 +11,16 @@ script = ExtResource("1_1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_1")
-hframes = 1
-vframes = 13
-frame = 0
-scale = Vector2(5, 5)
+centered = true
+offset = Vector2(0, 0)
+region_enabled = true
+region_rect = Rect2(0, 0, 32, 32)
+texture_filter = 0
+scale = Vector2(10, 10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0)
 shape = SubResource("RectangleShape2D_1")
-scale = Vector2(5, 5)
+scale = Vector2(10, 10)
 
 [node name="Camera2D" type="Camera2D" parent="."]

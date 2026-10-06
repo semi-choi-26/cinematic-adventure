@@ -18,10 +18,11 @@ var facing_direction: int = 1  # 1 = right, -1 = left
 # Node references
 @onready var sprite: Sprite2D = $Sprite2D
 
-# 애니메이션 프레임 설정
+# 애니메이션 프레임 설정 (Region 방식)
+const FRAME_WIDTH = 32
+const FRAME_HEIGHT = 32
 const IDLE_FRAME = 0
 const WALK_START_FRAME = 1
-const WALK_END_FRAME = 6
 const WALK_FRAMES = 6  # 프레임 1-6만 걷기 (7-12는 공격 모션)
 
 var walk_frame_time: float = 0.0
@@ -30,7 +31,7 @@ var current_walk_frame: int = 0
 
 func _ready() -> void:
 	print("Player initialized")
-	sprite.frame = IDLE_FRAME
+	set_sprite_frame(IDLE_FRAME)
 
 
 func _physics_process(delta: float) -> void:
@@ -79,6 +80,15 @@ func apply_movement(delta: float) -> void:
 	pass
 
 
+func set_sprite_frame(frame_index: int) -> void:
+	"""스프라이트 프레임 설정 (Region 방식)"""
+	if not sprite:
+		return
+
+	var y_offset = frame_index * FRAME_HEIGHT
+	sprite.region_rect = Rect2(0, y_offset, FRAME_WIDTH, FRAME_HEIGHT)
+
+
 func update_animation() -> void:
 	"""Update sprite direction and animation state"""
 	if not sprite:
@@ -88,12 +98,12 @@ func update_animation() -> void:
 	sprite.flip_h = facing_direction < 0
 
 	# Update animation frames
-	if abs(velocity.x) > 10:
+	if abs(velocity.x) > 10 or abs(velocity.y) > 10:
 		# Walking animation
 		animate_walk(get_physics_process_delta_time())
 	else:
 		# Idle animation
-		sprite.frame = IDLE_FRAME
+		set_sprite_frame(IDLE_FRAME)
 		walk_frame_time = 0.0
 		current_walk_frame = 0
 
@@ -106,7 +116,7 @@ func animate_walk(delta: float) -> void:
 	if walk_frame_time >= 0.1:
 		walk_frame_time = 0.0
 		current_walk_frame = (current_walk_frame + 1) % WALK_FRAMES
-		sprite.frame = WALK_START_FRAME + current_walk_frame
+		set_sprite_frame(WALK_START_FRAME + current_walk_frame)
 
 
 func get_facing_direction() -> int:

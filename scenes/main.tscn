@@ -24,6 +24,7 @@ motion_mirroring = Vector2(1920, 0)
 [node name="Sprite" type="Sprite2D" parent="ParallaxBackground/Layer1_Sky"]
 texture = ExtResource("4_1")
 centered = false
+texture_filter = 0
 
 [node name="Layer2_FarBackground" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.3, 0.3)
@@ -32,6 +33,7 @@ motion_mirroring = Vector2(1920, 0)
 [node name="Sprite" type="Sprite2D" parent="ParallaxBackground/Layer2_FarBackground"]
 texture = ExtResource("5_1")
 centered = false
+texture_filter = 0
 
 [node name="Layer3_MidBackground" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.5, 0.5)
@@ -40,6 +42,7 @@ motion_mirroring = Vector2(1920, 0)
 [node name="Sprite" type="Sprite2D" parent="ParallaxBackground/Layer3_MidBackground"]
 texture = ExtResource("6_1")
 centered = false
+texture_filter = 0
 
 [node name="Layer4_NearBackground" type="ParallaxLayer" parent="ParallaxBackground"]
 motion_scale = Vector2(0.8, 0.8)
@@ -48,6 +51,7 @@ motion_mirroring = Vector2(1920, 0)
 [node name="Sprite" type="Sprite2D" parent="ParallaxBackground/Layer4_NearBackground"]
 texture = ExtResource("7_1")
 centered = false
+texture_filter = 0
 
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2(0, 400)
@@ -57,7 +61,7 @@ offset_left = -1000.0
 offset_top = -32.0
 offset_right = 1000.0
 offset_bottom = 32.0
-color = Color(0.3, 0.5, 0.3, 1)
+color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
 shape = SubResource("RectangleShape2D_ground")
