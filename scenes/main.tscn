@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bk3nu4gvyqxwl"]
+[gd_scene load_steps=10 format=3 uid="uid://bk3nu4gvyqxwl"]
 
 [ext_resource type="PackedScene" uid="uid://c8yh7qvw8gbv7" path="res://scenes/player.tscn" id="1_1"]
 [ext_resource type="Script" path="res://scripts/camera_controller.gd" id="2_1"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" path="res://assets/backgrounds/The Dawn/The Dawn/Layers/2.png" id="5_1"]
 [ext_resource type="Texture2D" path="res://assets/backgrounds/The Dawn/The Dawn/Layers/3.png" id="6_1"]
 [ext_resource type="Texture2D" path="res://assets/backgrounds/The Dawn/The Dawn/Layers/4.png" id="7_1"]
+[ext_resource type="PackedScene" uid="uid://d3xfh5k8mnopq" path="res://scenes/mobile_controls.tscn" id="8_1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(2000, 64)
@@ -68,3 +69,5 @@ position = Vector2(100, 300)
 script = ExtResource("2_1")
 min_x = 640.0
 max_x = 2000.0
+
+[node name="MobileControls" parent="." instance=ExtResource("8_1")]
