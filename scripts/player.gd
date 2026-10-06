@@ -2,7 +2,6 @@ extends CharacterBody2D
 class_name Player
 
 ## Player Controller for 2D Side-view Cinematic Adventure
-## Phase 1: Basic left/right movement
 
 # Movement settings
 @export var walk_speed: float = 150.0
@@ -18,22 +17,19 @@ var facing_direction: int = 1  # 1 = right, -1 = left
 # Node references
 @onready var sprite: Sprite2D = $Sprite2D
 
-# 애니메이션 프레임 설정 (Region 방식)
-const FRAME_WIDTH = 32
-const SPRITE_SHEET_HEIGHT = 400.0
-const TOTAL_FRAMES = 13.0
-const FRAME_HEIGHT = SPRITE_SHEET_HEIGHT / TOTAL_FRAMES  # 30.769px
-const IDLE_FRAME = 0
-const WALK_START_FRAME = 1
-const WALK_FRAMES = 6  # 프레임 1-6만 걷기 (7-12는 공격 모션)
-
-var walk_frame_time: float = 0.0
+# 애니메이션 텍스처
+var idle_texture: Texture2D
+var walk_textures: Array[Texture2D] = []
 var current_walk_frame: int = 0
+var walk_frame_time: float = 0.0
 
 
 func _ready() -> void:
+	# AtlasTexture 로드
+	idle_texture = sprite.texture
+
+	# Walk 텍스처들 (나중에 추가 가능)
 	print("Player initialized")
-	set_sprite_frame(IDLE_FRAME)
 
 
 func _physics_process(delta: float) -> void:
@@ -52,8 +48,8 @@ func handle_input() -> void:
 	if input_direction != 0:
 		facing_direction = sign(input_direction)
 
-	# Determine if running (holding shift)
-	is_running = Input.is_action_pressed("ui_shift")
+	# 달리기 비활성화 (일단 걷기만)
+	is_running = false
 
 	# Calculate target speed (horizontal)
 	var target_speed := 0.0
@@ -78,17 +74,7 @@ func handle_input() -> void:
 func apply_movement(delta: float) -> void:
 	"""Apply gravity if needed (for future jumping/platforms)"""
 	# Currently no gravity - pure horizontal movement
-	# Can be added in Phase 2 if needed
 	pass
-
-
-func set_sprite_frame(frame_index: int) -> void:
-	"""스프라이트 프레임 설정 (Region 방식)"""
-	if not sprite:
-		return
-
-	var y_offset = frame_index * FRAME_HEIGHT
-	sprite.region_rect = Rect2(0, y_offset, FRAME_WIDTH, FRAME_HEIGHT)
 
 
 func update_animation() -> void:
@@ -99,26 +85,8 @@ func update_animation() -> void:
 	# Flip sprite based on facing direction
 	sprite.flip_h = facing_direction < 0
 
-	# Update animation frames
-	if abs(velocity.x) > 10 or abs(velocity.y) > 10:
-		# Walking animation
-		animate_walk(get_physics_process_delta_time())
-	else:
-		# Idle animation
-		set_sprite_frame(IDLE_FRAME)
-		walk_frame_time = 0.0
-		current_walk_frame = 0
-
-
-func animate_walk(delta: float) -> void:
-	"""Animate walking frames"""
-	walk_frame_time += delta
-
-	# Change frame every 0.1 seconds
-	if walk_frame_time >= 0.1:
-		walk_frame_time = 0.0
-		current_walk_frame = (current_walk_frame + 1) % WALK_FRAMES
-		set_sprite_frame(WALK_START_FRAME + current_walk_frame)
+	# Simple idle for now
+	# TODO: Add walk animation
 
 
 func get_facing_direction() -> int:
