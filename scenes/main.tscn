@@ -1,20 +1,52 @@
-[gd_scene load_steps=4 format=3 uid="uid://bk3nu4gvyqxwl"]
+[gd_scene load_steps=9 format=3 uid="uid://bk3nu4gvyqxwl"]
 
 [ext_resource type="PackedScene" uid="uid://c8yh7qvw8gbv7" path="res://scenes/player.tscn" id="1_1"]
 [ext_resource type="Script" path="res://scripts/camera_controller.gd" id="2_1"]
+[ext_resource type="Script" path="res://scripts/parallax_controller.gd" id="3_1"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/The Dawn/The Dawn/Layers/1.png" id="4_1"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/The Dawn/The Dawn/Layers/2.png" id="5_1"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/The Dawn/The Dawn/Layers/3.png" id="6_1"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/The Dawn/The Dawn/Layers/4.png" id="7_1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(2000, 64)
 
 [node name="Main" type="Node2D"]
 
-[node name="Background" type="CanvasLayer" parent="."]
-layer = -1
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+script = ExtResource("3_1")
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
-offset_right = 1280.0
-offset_bottom = 720.0
-color = Color(0.2, 0.3, 0.4, 1)
+[node name="Layer1_Sky" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.1, 0.1)
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite" type="Sprite2D" parent="ParallaxBackground/Layer1_Sky"]
+texture = ExtResource("4_1")
+centered = false
+
+[node name="Layer2_FarBackground" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.3, 0.3)
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite" type="Sprite2D" parent="ParallaxBackground/Layer2_FarBackground"]
+texture = ExtResource("5_1")
+centered = false
+
+[node name="Layer3_MidBackground" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite" type="Sprite2D" parent="ParallaxBackground/Layer3_MidBackground"]
+texture = ExtResource("6_1")
+centered = false
+
+[node name="Layer4_NearBackground" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.8, 0.8)
+motion_mirroring = Vector2(1920, 0)
+
+[node name="Sprite" type="Sprite2D" parent="ParallaxBackground/Layer4_NearBackground"]
+texture = ExtResource("7_1")
+centered = false
 
 [node name="Ground" type="StaticBody2D" parent="."]
 position = Vector2(0, 400)
@@ -35,4 +67,4 @@ position = Vector2(100, 300)
 [node name="Camera2D" type="Camera2D" parent="Player"]
 script = ExtResource("2_1")
 min_x = 640.0
-max_x = 1360.0
+max_x = 2000.0

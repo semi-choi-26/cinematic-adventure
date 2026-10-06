@@ -1,0 +1,30 @@
+[build]
+  publish = "builds/web"
+  command = """
+    echo 'HTML5 빌드는 GitHub Actions에서 생성됨' && \
+    echo 'builds/web 폴더를 Netlify에 배포' && \
+    ls -la builds/web || echo 'builds/web 폴더 없음 - GitHub Actions에서 빌드 필요'
+  """
+
+# Netlify에 직접 빌드하지 않고, GitHub Actions에서 빌드된 파일만 배포
+# 또는 Netlify CLI로 수동 배포
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Godot 4.x를 위한 CORS 헤더
+    Cross-Origin-Embedder-Policy = "require-corp"
+    Cross-Origin-Opener-Policy = "same-origin"
+
+[[headers]]
+  for = "/*.wasm"
+  [headers.values]
+    Content-Type = "application/wasm"
+
+[[headers]]
+  for = "/*.pck"
+  [headers.values]
+    Content-Type = "application/octet-stream"

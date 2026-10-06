@@ -16,11 +16,20 @@ var facing_direction: int = 1  # 1 = right, -1 = left
 
 # Node references
 @onready var sprite: Sprite2D = $Sprite2D
-@onready var animation_player: AnimationPlayer = $AnimationPlayer if has_node("AnimationPlayer") else null
+
+# 애니메이션 프레임 설정
+const IDLE_FRAME = 0
+const WALK_START_FRAME = 1
+const WALK_END_FRAME = 7
+const WALK_FRAMES = 7
+
+var walk_frame_time: float = 0.0
+var current_walk_frame: int = 0
 
 
 func _ready() -> void:
 	print("Player initialized")
+	sprite.frame = IDLE_FRAME
 
 
 func _physics_process(delta: float) -> void:
@@ -63,19 +72,32 @@ func apply_movement(delta: float) -> void:
 
 func update_animation() -> void:
 	"""Update sprite direction and animation state"""
-	# Flip sprite based on facing direction
-	if sprite:
-		sprite.flip_h = facing_direction < 0
+	if not sprite:
+		return
 
-	# Play animations (if AnimationPlayer exists)
-	if animation_player:
-		if abs(velocity.x) > 10:
-			if is_running:
-				animation_player.play("run")
-			else:
-				animation_player.play("walk")
-		else:
-			animation_player.play("idle")
+	# Flip sprite based on facing direction
+	sprite.flip_h = facing_direction < 0
+
+	# Update animation frames
+	if abs(velocity.x) > 10:
+		# Walking animation
+		animate_walk(get_physics_process_delta_time())
+	else:
+		# Idle animation
+		sprite.frame = IDLE_FRAME
+		walk_frame_time = 0.0
+		current_walk_frame = 0
+
+
+func animate_walk(delta: float) -> void:
+	"""Animate walking frames"""
+	walk_frame_time += delta
+
+	# Change frame every 0.1 seconds
+	if walk_frame_time >= 0.1:
+		walk_frame_time = 0.0
+		current_walk_frame = (current_walk_frame + 1) % WALK_FRAMES
+		sprite.frame = WALK_START_FRAME + current_walk_frame
 
 
 func get_facing_direction() -> int:
