@@ -20,7 +20,9 @@ var facing_direction: int = 1  # 1 = right, -1 = left
 
 # 애니메이션 프레임 설정 (Region 방식)
 const FRAME_WIDTH = 32
-const FRAME_HEIGHT = 32
+const SPRITE_SHEET_HEIGHT = 400.0
+const TOTAL_FRAMES = 13.0
+const FRAME_HEIGHT = SPRITE_SHEET_HEIGHT / TOTAL_FRAMES  # 30.769px
 const IDLE_FRAME = 0
 const WALK_START_FRAME = 1
 const WALK_FRAMES = 6  # 프레임 1-6만 걷기 (7-12는 공격 모션)

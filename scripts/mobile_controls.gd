@@ -26,9 +26,11 @@ func _ready() -> void:
 
 func _on_touch_input(event: InputEvent) -> void:
 	var screen_center = get_viewport().get_visible_rect().size / 2
+	print("Input event: ", event.get_class())
 
 	# 터치 시작
 	if event is InputEventScreenTouch:
+		print("Touch at: ", event.position, " pressed: ", event.pressed)
 		if event.pressed:
 			is_touching = true
 			touch_pos = event.position
@@ -44,6 +46,7 @@ func _on_touch_input(event: InputEvent) -> void:
 
 	# 마우스 (PC 테스트용)
 	elif event is InputEventMouseButton:
+		print("Mouse at: ", event.position, " pressed: ", event.pressed)
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
 				is_touching = true
@@ -62,13 +65,16 @@ func _on_touch_input(event: InputEvent) -> void:
 func _simulate_input(touch: Vector2, center: Vector2) -> void:
 	"""터치 위치에 따라 입력 시뮬레이션"""
 	var diff = touch - center
+	print("Touch diff: ", diff)
 
 	# 좌우 (수평 거리 > 100px)
 	if abs(diff.x) > 100:
 		if diff.x < 0:
+			print("Moving LEFT")
 			_press_action("move_left")
 			_release_action("move_right")
 		else:
+			print("Moving RIGHT")
 			_press_action("move_right")
 			_release_action("move_left")
 	else:
@@ -78,9 +84,11 @@ func _simulate_input(touch: Vector2, center: Vector2) -> void:
 	# 상하 (수직 거리 > 100px)
 	if abs(diff.y) > 100:
 		if diff.y < 0:
+			print("Moving UP")
 			_press_action("move_up")
 			_release_action("move_down")
 		else:
+			print("Moving DOWN")
 			_press_action("move_down")
 			_release_action("move_up")
 	else:

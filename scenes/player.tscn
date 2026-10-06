@@ -14,7 +14,7 @@ texture = ExtResource("2_1")
 centered = true
 offset = Vector2(0, 0)
 region_enabled = true
-region_rect = Rect2(0, 0, 32, 32)
+region_rect = Rect2(0, 0, 32, 30.769)
 texture_filter = 0
 scale = Vector2(10, 10)
 
