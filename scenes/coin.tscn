@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://bq5xfh8mnopq"]
+
+[ext_resource type="Script" path="res://scripts/item.gd" id="1_1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1"]
+radius = 16.0
+
+[node name="Coin" type="Area2D" groups=["item"]]
+script = ExtResource("1_1")
+item_type = 0
+item_name = "Coin"
+item_value = 1
+auto_collect = true
+
+[node name="Sprite2D" type="ColorRect" parent="."]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(1, 0.84, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bk3nu4gvyqxwl"]
+[gd_scene load_steps=12 format=3 uid="uid://bk3nu4gvyqxwl"]
 
 [ext_resource type="PackedScene" uid="uid://c8yh7qvw8gbv7" path="res://scenes/player.tscn" id="1_1"]
 [ext_resource type="Script" path="res://scripts/camera_controller.gd" id="2_1"]
@@ -8,9 +8,14 @@
 [ext_resource type="Texture2D" path="res://assets/backgrounds/The Dawn/The Dawn/Layers/3.png" id="6_1"]
 [ext_resource type="Texture2D" path="res://assets/backgrounds/The Dawn/The Dawn/Layers/4.png" id="7_1"]
 [ext_resource type="PackedScene" uid="uid://d3xfh5k8mnopq" path="res://scenes/mobile_controls.tscn" id="8_1"]
+[ext_resource type="PackedScene" uid="uid://c7xfh9k2nopq" path="res://scenes/dialogue_box.tscn" id="9_1"]
+[ext_resource type="PackedScene" uid="uid://bq5xfh8mnopq" path="res://scenes/coin.tscn" id="10_1"]
+[ext_resource type="PackedScene" uid="uid://d8xfh3k4nopq" path="res://scenes/minigame_rps.tscn" id="11_1"]
+[ext_resource type="PackedScene" uid="uid://e9xfh4k5nopq" path="res://scenes/test_npc.tscn" id="12_1"]
+[ext_resource type="PackedScene" uid="uid://f0xfh5k6nopq" path="res://scenes/test_npc2.tscn" id="13_1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
-size = Vector2(2000, 64)
+size = Vector2(4000, 432)
 
 [node name="Main" type="Node2D"]
 
@@ -57,13 +62,14 @@ texture_filter = 0
 position = Vector2(0, 400)
 
 [node name="GroundSprite" type="ColorRect" parent="Ground"]
-offset_left = -1000.0
+offset_left = -2000.0
 offset_top = -32.0
-offset_right = 1000.0
-offset_bottom = 32.0
+offset_right = 2000.0
+offset_bottom = 400.0
 color = Color(0.5, 0.5, 0.5, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(0, 200)
 shape = SubResource("RectangleShape2D_ground")
 
 [node name="Player" parent="." instance=ExtResource("1_1")]
@@ -75,3 +81,22 @@ min_x = 640.0
 max_x = 2000.0
 
 [node name="MobileControls" parent="." instance=ExtResource("8_1")]
+
+[node name="DialogueBox" parent="." instance=ExtResource("9_1")]
+
+[node name="MiniGameRPS" parent="." instance=ExtResource("11_1")]
+
+[node name="Coin1" parent="." instance=ExtResource("10_1")]
+position = Vector2(300, 350)
+
+[node name="Coin2" parent="." instance=ExtResource("10_1")]
+position = Vector2(400, 350)
+
+[node name="Coin3" parent="." instance=ExtResource("10_1")]
+position = Vector2(500, 350)
+
+[node name="TestNPC" parent="." instance=ExtResource("12_1")]
+position = Vector2(700, 350)
+
+[node name="TestNPC2" parent="." instance=ExtResource("13_1")]
+position = Vector2(900, 350)
