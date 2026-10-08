@@ -28,6 +28,15 @@ window/size/mode=2
 window/stretch/mode="canvas_items"
 window/handheld/orientation=1
 
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
+theme/default_font_generate_mipmaps=true
+
+[internationalization]
+
+locale/fallback="ko_KR"
+
 [input]
 
 move_left={

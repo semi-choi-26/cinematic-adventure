@@ -17,7 +17,7 @@ var facing_direction: int = 1  # 1 = right, -1 = left
 # Y 위치 제한
 var initial_y: float = 0.0
 const MAX_UP_DISTANCE: float = 0.0
-const MAX_DOWN_Y: float = 380.0  # 바닥 바로 위 (바닥은 y=400)
+const MAX_DOWN_Y: float = 550.0  # 바닥 바로 위 (바닥은 y=400)
 
 # Node references
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D

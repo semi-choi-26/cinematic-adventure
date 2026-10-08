@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://h2xfh7k8nopq"]
+
+[ext_resource type="Script" path="res://scripts/interact_button.gd" id="1_1"]
+
+[node name="InteractButton" type="CanvasLayer"]
+script = ExtResource("1_1")
+
+[node name="Button" type="Button" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -180.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 100.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 40
+text = "E
+Talk"

@@ -13,6 +13,8 @@
 [ext_resource type="PackedScene" uid="uid://d8xfh3k4nopq" path="res://scenes/minigame_rps.tscn" id="11_1"]
 [ext_resource type="PackedScene" uid="uid://e9xfh4k5nopq" path="res://scenes/test_npc.tscn" id="12_1"]
 [ext_resource type="PackedScene" uid="uid://f0xfh5k6nopq" path="res://scenes/test_npc2.tscn" id="13_1"]
+[ext_resource type="PackedScene" uid="uid://g1xfh6k7nopq" path="res://scenes/test_npc_eng.tscn" id="14_1"]
+[ext_resource type="PackedScene" uid="uid://h2xfh7k8nopq" path="res://scenes/interact_button.tscn" id="15_1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(4000, 432)
@@ -100,3 +102,6 @@ position = Vector2(700, 350)
 
 [node name="TestNPC2" parent="." instance=ExtResource("13_1")]
 position = Vector2(900, 350)
+
+[node name="TestNPCEng" parent="." instance=ExtResource("14_1")]
+position = Vector2(600, 350)

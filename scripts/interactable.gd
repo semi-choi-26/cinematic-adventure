@@ -25,6 +25,10 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
+	# 터치 가능하게 설정 (모바일)
+	input_pickable = true
+	input_event.connect(_on_input_event)
+
 	# 기본 충돌 레이어 설정
 	collision_layer = 0
 	collision_mask = 1  # Player 레이어
@@ -50,6 +54,17 @@ func _input(event: InputEvent) -> void:
 	# E 키로 상호작용
 	if event.is_action_pressed("interact") and player_nearby and can_interact:
 		interact()
+
+
+func _on_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+	"""터치/클릭 이벤트 처리 (모바일)"""
+	# 터치 또는 마우스 클릭
+	if (event is InputEventScreenTouch and event.pressed) or \
+	   (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
+		# 플레이어가 근처에 있을 때만 상호작용
+		if player_nearby and can_interact:
+			print("Touched: ", name)
+			interact()
 
 
 func interact() -> void:
