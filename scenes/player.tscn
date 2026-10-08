@@ -43,11 +43,11 @@ script = ExtResource("1_1")
 sprite_frames = SubResource("SpriteFrames_1")
 animation = &"idle"
 texture_filter = 0
-scale = Vector2(3, 3)
+scale = Vector2(1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 0)
 shape = SubResource("RectangleShape2D_1")
-scale = Vector2(3, 3)
+scale = Vector2(1, 1)
 
 [node name="Camera2D" type="Camera2D" parent="."]
