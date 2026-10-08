@@ -16,7 +16,8 @@ var facing_direction: int = 1  # 1 = right, -1 = left
 
 # Y 위치 제한
 var initial_y: float = 0.0
-const MAX_UP_DISTANCE: float = 20.0
+const MAX_UP_DISTANCE: float = 0.0
+const MAX_DOWN_Y: float = 380.0  # 바닥 바로 위 (바닥은 y=400)
 
 # Node references
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -38,9 +39,15 @@ func _physics_process(delta: float) -> void:
 	update_animation()
 	move_and_slide()
 
-	# Y 위치 제한 (위로 20px만 이동 가능)
+	# Y 위치 제한
+	# 위로 20px만
 	if global_position.y < initial_y - MAX_UP_DISTANCE:
 		global_position.y = initial_y - MAX_UP_DISTANCE
+		velocity.y = 0
+
+	# 아래로는 바닥까지만 (화면 하단)
+	if global_position.y > MAX_DOWN_Y:
+		global_position.y = MAX_DOWN_Y
 		velocity.y = 0
 
 
